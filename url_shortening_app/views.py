@@ -7,7 +7,9 @@ from django.urls import reverse
 from django import forms
 import re
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 
+DOMAIN_NAME = "127.0.0.1:8000"
 
 class GetShortenedURL(View):
     def get(self, request, short_code):
@@ -47,7 +49,7 @@ class CreateShortUrl(View):
 class UrlAccessCount(View):
     def get(self, request, short_code):
         url_obj = get_object_or_404(UrlModel, short_code=short_code)
-        return render(request, 'count_clicks.html', {'url_obj': url_obj})
+        return render(request, 'count_clicks.html', {'url_obj': url_obj, 'domain_name': DOMAIN_NAME})
 
 
 class TrackShortUrl(View):
@@ -58,19 +60,18 @@ class TrackShortUrl(View):
 
     def post(self, request):
         form = UrlModelForm(data=request.POST)
+        if not form.is_valid():
+            raise ValidationError('Form is not valid')
+        short_url = form.cleaned_data['url']  # http://127.0.0.1:8000/abc123
+        match = re.search(r"^http://127\.0\.0\.1:8000/(.+)$", short_url)
+        if not match:
+            messages.error(request, "The input url does not match the pattern given in an example.")
+            return render(request, 'track_url.html', {'form': form})
+        short_code = match.group(1)
+        if not UrlModel.objects.filter(short_code=short_code).exists():
+            raise Http404("There is no shortened url found with this short code.")
+        return redirect(reverse('url:url_access_count', kwargs={'short_code': short_code}))
 
-        if form.is_valid():
-            short_url = form.cleaned_data['url']  # http://127.0.0.1:8000/abc123
-            match = re.search(r"^http://127\.0\.0\.1:8000/(.+)$", short_url)
-            if match:
-                short_code = match.group(1)
-                if not UrlModel.objects.filter(short_code=short_code).exists():
-                    raise Http404("There is no shortened url found with this short code.")
-                return redirect(reverse('url:url_access_count', kwargs={'short_code': short_code}))
-
-            else:
-                messages.error(request, "The input url does not match the pattern given in an example.")
-                return render(request, 'track_url.html', {'form': form})
 
 
 class UnshortenUrl(View):

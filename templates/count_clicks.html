@@ -6,7 +6,7 @@
         <div class="count-clicks">
             <h3>Total URL Clicks</h3>
             <p>The number of clicks from the shortened URL that redirected the user to the destination page.</p>
-            <a href="{% url 'url:redirect_short_url' url_obj.short_code %}" class="url" target="_blank">http://127.0.0.1:8000{% url 'url:redirect_short_url' url_obj.short_code %}</a>
+            <a href="{% url 'url:redirect_short_url' url_obj.short_code %}" class="url" target="_blank">{{ domain_name }}{% url 'url:redirect_short_url' url_obj.short_code %}</a>
             <div class="clicks-number">{{ url_obj.access_count }}</div>
             <a href="{% url 'url:track_short_url' %}" class="back-link"><button type="button" class="button-url">Track clicks from another short URL</button></a>
             <a href="{% url 'url:create_short_url' %}" class="back-link"><button type="button" class="button-url">Shorten Another URL</button></a>
