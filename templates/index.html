@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <h2>Paste the URL to be shortened</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ form.url }}
+                    <button type="submit">Shorten URL</button>
+                </div>
+            </form>
+            <div class="description">
+                ShortURL is a free tool to shorten URLs and generate short links.<br>
+                URL shortener allows to create a shortened link making it easy to share.
+            </div>
+        </div>
+    </div>
+{% endblock %}

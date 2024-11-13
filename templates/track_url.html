@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <h2>Url Click Counter</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{ form.url }}
+                    <button type="submit">Track Clicks</button>
+                </div>
+            </form>
+            <p style="text-decoration: underline; color: #111116"><b>Example: </b>http://127.0.0.1:8000/abc123</p>
+        </div>
+    </div>
+    <div class="description2">
+        Enter the URL to track how many clicks it received.<br>
+        Track the total hits of the shortened URL in real time, you do not have to register.
+    </div>
+{% endblock %}

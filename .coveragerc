@@ -1,0 +1,16 @@
+[run]
+omit =
+    # Django core and admin apps
+    core/*
+    */migrations/*
+    */admin.py
+    */tests.py
+
+    # Management scripts and settings files
+    */manage.py
+    */wsgi.py
+    */asgi.py
+    */settings.py
+
+    # Virtual environment (if you're using a venv folder in the project)
+    */venv/*

@@ -1,0 +1,288 @@
+/* Reset margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Basic body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar styling */
+.navbar {
+  text-align: center;
+  padding: 20px 0;
+  background-color: #f4f4f9;
+}
+
+.navbar h1 {
+  color: #007bff;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+/* Center the card container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card styling */
+.card {
+  width: 800px;
+  padding: 40px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* text-align: center; */
+}
+
+/* Header text styling */
+.card h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Input group styling */
+.input-group {
+  display: flex;
+  margin-bottom: 20px;
+  height: 60px;
+}
+
+/* Input field styling */
+.input-group input[type="url"] {
+  flex: 1;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+/* Button styling */
+.input-group button {
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.input-group button:hover {
+  background-color: #0056b3;
+}
+
+/* Description text styling */
+.description {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.description2{
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.3;
+  color: #303d43;
+}
+
+.long-url{
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.long-url:hover{
+  text-decoration: underline;
+}
+
+.total-clicks:hover, .shorten-another-url:hover{
+  background-color: #0056b3;
+}
+
+.total-clicks, .shorten-another-url {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: cornflowerblue;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+
+
+/* General footer styles */
+.footer {
+  background-color: #333; /* Dark background */
+  padding: 20px;
+  text-align: center;
+  color: #ccc; /* Light grey text */
+  border-top: 4px solid #00bfff; /* Light blue top border */
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Footer links */
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #00bfff; /* Blue color for links */
+  text-decoration: none; /* Remove underline */
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #fff; /* Change color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    margin-top: 15px;
+    line-height: 1.6;
+  }
+}
+
+
+/* Styling for the count clicks section */
+.count-clicks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 0;
+  width: 800px;
+}
+
+.count-clicks h3 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.count-clicks p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.count-clicks .clicks-number {
+  font-size: 48px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 15px;
+  padding: 20px 30px 20px 30px;
+  background-color: #b6cce3;
+  border-radius: 5px;
+  align-self: flex-start;
+}
+
+.count-clicks .back-link {
+  font-size: 16px;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+  align-self: flex-start;
+}
+
+.count-clicks .back-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+
+.url{
+  padding: 10px;
+  background-color: #b6cce3;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  text-decoration: none;
+  color: #007bff;
+  align-self: flex-start;
+}
+
+.url:hover{
+  text-decoration: underline;
+}
+
+.button-url{
+  background-color:#0056b3;
+  color: white;
+  padding: 10px;
+  border-radius: 3px;
+  border: 0;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.button-url:hover{
+  background-color: #007bff;
+  text-decoration: underline;
+}
+
+
+.alertMessage {
+   padding: 20px;
+   background-color: #f44336;
+   color: white;
+   font-size: 20px;
+}
+
+.close{
+   margin-left: 15px;
+   color: white;
+   font-weight: bold;
+   float: right;
+   font-size: 22px;
+   line-height: 20px;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.close:hover {
+   color: black;
+}

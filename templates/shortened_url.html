@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="card">
+            <h2>Your Shortened URL</h2>
+            <form method="GET">
+                <div class="input-group">
+                    <input type="url" name="url" id="myInput" value="http://127.0.0.1:8000/{{ short_url.short_code }}/redirect" readonly>
+                    <button type="button" onclick="copyUrl()">Copy URL</button>
+                </div>
+            </form>
+            <p><b>Long URL: </b><a href="{{ short_url.url }}" class="long-url">{{ short_url.url }}</a></p>
+
+            <a href="{% url 'url:url_access_count' short_url.short_code %}" style="text-decoration: none;"><button type="button" class="total-clicks">Total clicks of your short URL</button></a>
+            <a href="{% url 'url:create_short_url' %}" style="text-decoration: none;"><button type="button" class="shorten-another-url">Shorten Another URL</button></a>
+            <div class="description">
+                Copy the short link and share it in messages, texts, posts, websites and other locations.
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        function showMessage(){
+            const message = document.createElement('div');
+            message.textContent = "URL copied to clipboard!";
+            message.style.position = 'fixed';
+            message.style.top = '20px';
+            message.style.right = '20px';
+            message.style.backgroundColor = '#007bff';
+            message.style.color = 'white';
+            message.style.padding = '10px';
+            message.style.borderRadius = '5px';
+            document.body.appendChild(message);
+
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 3000);
+        }
+
+        function copyUrl(){
+            const copyText = document.getElementById('myInput')
+
+            // Select the text field
+            copyText.select()
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                // Show a message after copying the text
+                showMessage()
+            }).catch(err => {
+                console.log("Failed to copy text: ", err)
+            })
+        }
+
+
+        const input = document.getElementById('myInput')
+        input.addEventListener("click", function(){
+            this.select()
+            navigator.clipboard.writeText(this.value).then(() => {
+                // Show a message after copying the text
+                showMessage()
+            }).catch(err => {
+                console.error("Failed to copy text: ", err)
+            })
+        })
+    </script>
+{% endblock %}
