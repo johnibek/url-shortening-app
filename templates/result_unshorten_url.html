@@ -5,7 +5,7 @@
         <div class="count-clicks">
             <h3>Unshortened URL</h3>
             <p>Long URL taken from shortened url</p>
-            <a href="{% url "url:get_short_url" url_obj.short_code %}" class="url" target="_blank">127.0.0.1:8000/{{ url_obj.short_code }}</a>
+            <a href="{% url "url:get_short_url" url_obj.short_code %}" class="url" target="_blank">{{ domain_name }}/{{ url_obj.short_code }}</a>
             <div class="clicks-number" style="font-size: 18px;">{{ url_obj.url }}</div>
             <a href="{% url 'url:unshorten_url' %}" class="back-link"><button type="button" class="button-url">Check the destination page of another short url</button></a>
             <a href="{% url 'url:create_short_url' %}" class="back-link"><button type="button" class="button-url">Shorten Another URL</button></a>

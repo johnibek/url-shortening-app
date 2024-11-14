@@ -11,7 +11,11 @@
                     <button type="submit">Track Clicks</button>
                 </div>
             </form>
-            <p style="text-decoration: underline; color: #111116"><b>Example: </b>http://127.0.0.1:8000/abc123</p>
+            {% if debug %}
+                <p style="text-decoration: underline; color: #111116"><b>Example: </b>http://{{ domain_name }}/abc123</p>
+            {% else %}
+                <p style="text-decoration: underline; color: #111116"><b>Example: </b>https://{{ domain_name }}/abc123</p>
+            {% endif %}
         </div>
     </div>
     <div class="description2">

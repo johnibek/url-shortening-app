@@ -8,17 +8,18 @@ from django import forms
 import re
 from django.contrib import messages
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
-DOMAIN_NAME = "127.0.0.1:8000"
 
 class GetShortenedURL(View):
     def get(self, request, short_code):
+        domain_name = request.get_host()
         try:
             short_url = UrlModel.objects.get(short_code=short_code)
         except UrlModel.DoesNotExist:
             raise Http404("This short code does not exist")
 
-        return render(request, 'shortened_url.html', {'short_url': short_url})
+        return render(request, 'shortened_url.html', {'short_url': short_url, 'domain_name': domain_name, 'debug': settings.DEBUG})
 
 class RedirectShortUrl(View):
     def get(self, request, short_code):
@@ -48,22 +49,28 @@ class CreateShortUrl(View):
 
 class UrlAccessCount(View):
     def get(self, request, short_code):
+        domain_name = request.get_host()
         url_obj = get_object_or_404(UrlModel, short_code=short_code)
-        return render(request, 'count_clicks.html', {'url_obj': url_obj, 'domain_name': DOMAIN_NAME})
+        return render(request, 'count_clicks.html', {'url_obj': url_obj, 'domain_name': domain_name})
 
 
 class TrackShortUrl(View):
     def get(self, request):
+        domain_name = request.get_host()
         form = UrlModelForm()
         form.fields['url'].widget = forms.URLInput(attrs={'placeholder': 'Enter here your shortened URL'})
-        return render(request, 'track_url.html', {'form': form})
+        return render(request, 'track_url.html', {'form': form, 'domain_name': domain_name, 'debug': settings.DEBUG})
 
     def post(self, request):
         form = UrlModelForm(data=request.POST)
         if not form.is_valid():
-            raise ValidationError('Form is not valid')
+            raise ValidationError('Invalid Url')
         short_url = form.cleaned_data['url']  # http://127.0.0.1:8000/abc123
-        match = re.search(r"^http://127\.0\.0\.1:8000/(.+)$", short_url)
+        domain_name = request.get_host()
+        if settings.DEBUG:
+            match = re.search(rf"^http://{re.escape(domain_name)}/(.+)$", short_url)
+        else:
+            match = re.search(rf"^https://{re.escape(domain_name)}/(.+)$", short_url)
         if not match:
             messages.error(request, "The input url does not match the pattern given in an example.")
             return render(request, 'track_url.html', {'form': form})
@@ -76,26 +83,36 @@ class TrackShortUrl(View):
 
 class UnshortenUrl(View):
     def get(self, request):
+        domain_name = request.get_host
         form = UrlModelForm()
         form.fields['url'].widget = forms.URLInput(attrs={'placeholder': 'Enter the shortened url'})
-        return render(request, 'unshorten_url.html', {'form': form})
+        return render(request, 'unshorten_url.html', {'form': form, 'domain_name': domain_name, 'debug': settings.DEBUG})
     
     def post(self, request):
         form = UrlModelForm(data=request.POST)
         
-        if form.is_valid():
-            short_url = form.cleaned_data['url']
-            match = re.search(r"http://127\.0\.0\.1:8000/(.+)$", short_url)
-            if match:
-                short_code = match.group(1)
-                if not UrlModel.objects.filter(short_code=short_code).exists():
-                    raise Http404("There is no shortened url found with this short code.")
-                
-                url_obj = UrlModel.objects.get(short_code=short_code)
-                return render(request, 'result_unshorten_url.html', {'url_obj': url_obj})    
-                
-            else:
-                messages.error(request, "The input url does not match the pattern given in an example.")
-                return render(request, 'unshorten_url.html', {'form': form})  # I rendered the html file to keep input url as is.
+        if not form.is_valid():
+            return ValidationError("Invalid Url")
+            
+        domain_name = request.get_host()
+        short_url = form.cleaned_data['url']
+        if settings.DEBUG:
+            match = re.search(rf"^http://{re.escape(domain_name)}/(.+)$", short_url)
+        else:
+            match = re.search(rf"^https://{re.escape(domain_name)}/(.+)$", short_url)
+
+        if not match:
+            messages.error(request, "The input url does not match the pattern given in an example.")
+            return render(request, 'unshorten_url.html', {'form': form})  # I rendered the html file to keep input url as is.
+
+        short_code = match.group(1)
+        if not UrlModel.objects.filter(short_code=short_code).exists():
+            raise Http404("There is no shortened url found with this short code.")
+        
+        url_obj = UrlModel.objects.get(short_code=short_code)
+        return render(request, 'result_unshorten_url.html', {'url_obj': url_obj, 'domain_name': domain_name})
+    
+            
+        
             
         
